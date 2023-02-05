@@ -1,0 +1,19 @@
+# Files and directories created by pub.
+.dart_tool/
+.packages
+
+# Conventional directory for build output.
+build/
+
+# Compiled JS
+web/js/*
+
+# PHP drafts
+web/api/draft
+
+# Some files
+pubspec.lock
+send.php
+accept.php
+uikit-icons.min.js
+uikit.min.css
