@@ -1,11 +1,14 @@
 <?php
 
 class Reply {
+    private object $box;
     private object $DB;
+    private object $user;
     private $result;
 
-    public function __construct(object $db) {
-        $this->DB = $db;
+    public function __construct(object $box) {
+        $this->DB = $box['db'];
+        $this->user = $box['user'];
     }
 
     private function giveData():void {
@@ -148,6 +151,7 @@ class Reply {
     }
 
     public function auth() {
+
         $p = H::post();
         $msg = [["error" => "incorrect pair login/password #1"]];
 
@@ -155,10 +159,12 @@ class Reply {
             H::giveJson($msg);
             exit();
         }
+
         // есть ли такой юзер, совпадают ли хеши паролей?
         // - да -> смотрим его токен, если токен действительный, пернаправляем
         // на редактирование. Если токен старый, выдаем новый токен
         // - нет -> отправляем обратно на /auth 
+        $this->user->exists($p->login, $p->password);
         
 
     }

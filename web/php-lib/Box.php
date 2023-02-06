@@ -18,19 +18,27 @@ class Box extends Pimple {
     }
 
     private function closures() {
-        $this['router'] = $this->share(function ($c) {
+        $this['router'] = function ($c) {
             return new AltoRouter();
-        }); 
-        $this['db'] = $this->share(function ($c) {
-            return new PlainDB(
-                $c['host'], $c['user'], $c['password'], $c['dbname'], $c['charset']
-            );
-        });
-        $this['reply'] = function($c) {
-            return new Reply($c['db']);
         };
+
+        $this['db'] = function ($c) {
+            return new PlainDB(
+                $c['host'], $c['dbuser'], $c['password'], $c['dbname'], $c['charset']
+            );
+        };
+        
+        $this['reply'] = function($c) {
+            return new Reply($c);
+        };
+        
         $this['jwt'] = function($c) {
             return new Jwt($c['secret'], $c['algorithm']);
-        }; 
+        };
+
+        $this['user'] = function ($c) {
+            return new User($c);
+        };
+
     }
 }

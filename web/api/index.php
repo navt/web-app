@@ -25,9 +25,9 @@ if (in_array($method, $availableMethods) === false) {
 
 $box = new Box('php-lib/values.ini');
 
-$db = $box['db'];
-$reply = $box['reply'];
 $router = $box['router'];
+$reply = $box['reply'];
+
 
 $router->setBasePath('/api');
 // GET requests
@@ -71,7 +71,7 @@ if( is_array($match) && is_callable( $match['target'] ) ) {
 } else {
 	// no route was matched
     $uri = $server->REQUEST_URI;
-    Reply::giveJson(
+    H::giveJson(
         [["error" => "no relevant api reqest for method: {$method} uri: {$uri}"]]
     );
 }
