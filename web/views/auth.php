@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="../uikit.min.css">
-    <!-- <script defer src="../js/auth.dart.js"></script> -->
+    <script defer src="../js/auth.dart.js"></script>
 </head>
 <body>
   <div class="uk-container">
-    <form method="post" action="/api/auth">
+    <form id="lform">
       <div class="uk-margin-top"></div>
       <div class="uk-margin">
         <input name="login" class="uk-input uk-width-1-2" type="text" placeholder="Логин" aria-label="login">
@@ -20,10 +20,13 @@
       </div>
       <div class="uk-margin">
         <label>
-          <button class="uk-button uk-button-default">Войти</button>
+          <button id="btn" class="uk-button uk-button-default">Войти</button>
         </label>
       </div>
     </form>
+
+    <div id="msg" class="uk-alert-warning uk-width-1-2" uk-alert></div>
+
   </div>
 </body>
 </html>

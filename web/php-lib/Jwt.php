@@ -2,8 +2,13 @@
 
 class Jwt {
     private string $secret;
-    private array $algorithms = ['HS256' => 'sha256', 'HS384' => 'sha384', 'HS512' => 'sha512'];
-    private array $headerVals = ['alg' => 'HS256', 'typ' => 'JWT'];
+    private array $algorithms = [
+        'HS256' => 'sha256', 
+        'HS384' => 'sha384', 
+        'HS512' => 'sha512'];
+    private array $headerVals = [
+        'alg' => 'HS256', 
+        'typ' => 'JWT'];
     
     public $payloadStd;
 
@@ -46,14 +51,13 @@ class Jwt {
 
     public function analize(string $token) {
         list($h, $pl, $s) = explode('.', $token);
+        $this->payloadStd = json_decode(self::decode($pl));
         
         // signature analysis
         if (!hash_equals($s, hash_hmac($this->algorithms[$this->algo], $h.$pl, $this->secret))) {
             return false;
         } 
         // if signatures matched
-        $this->payloadStd = self::decode($pl);
-
         if (isset($this->payloadStd->exp) && (time() > $this->payloadStd->exp)) {
             return false;
         }

@@ -15,7 +15,6 @@ class Idb {
         if (!db.objectStoreNames!.contains(storeName)) {  
           db.createObjectStore(storeName, keyPath: "created");
           print('Created store $storeName');
-          add(db, {"created": 111, "token": "222.333.444"});
         }
       });
   }
@@ -25,7 +24,7 @@ class Idb {
     var store = txn.objectStore(storeName);
     var trgt = store.add(value);
     await txn.completed;
-    trgt.then((value) => print(value)); // print key
+    trgt.then((value) => print('$value added')); // print key
   }
 
   Future<List> cursor(Database db) async {
@@ -44,6 +43,11 @@ class Idb {
         print('all done! cursor');
       });
     await txn.completed;
+
+    if (records.isEmpty) {
+      add(db, {"created": 111, "token": "222.333.444"});
+      return [{"created": 111, "token": "222.333.444"}];
+    }
     
     return records;
   }

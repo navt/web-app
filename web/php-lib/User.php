@@ -3,6 +3,7 @@
 class User {
     
     private object $box;
+    private array $data;
 
     public function __construct(object $box) {
         $this->box = $box;
@@ -20,9 +21,9 @@ class User {
             exit();
         }
 
-        $row = $result->fetch_array(MYSQLI_ASSOC);
+        $this->data = $result->fetch_array(MYSQLI_ASSOC);
 
-        if (!password_verify($password, $row['hash'])) {
+        if (!password_verify($password, $this->data['hash'])) {
             H::giveJson([["error" => "$msg #3"]]);
             exit();
         }
@@ -45,9 +46,31 @@ class User {
         }
 
         if ($this->jwt->analize($token) == true) {
-            echo 'success';
+            H::giveJson([["error" => "you are already logged in"]]);
+            exit();
         } else {
-            echo 'fail';
+            // generate new token
+            $this->generateToken();
         }
+    }
+
+    private function generateToken() {
+        $payload = ['id' => $this->data['id'], 'iat' => 0, 'exp' => 0];
+
+        $iat = new DateTime('now'); // 'now'
+        $payload['iat'] = $iat->getTimestamp();
+        // set interval
+        $interval = new DateInterval('P3D');
+        $interval->d = $this->box['days'];
+        $interval->h = $this->box['hours'];
+        $interval->i = $this->box['minutes'];
+        $exp = clone $iat;
+        $exp->add($interval);
+        $payload['exp'] = $exp->getTimestamp();
+
+        $token = $this->jwt->buildToken($payload);
+        H::giveJson([["newtoken" =>
+            ['created' => $payload['iat'], 'token' => $token] 
+        ]]);
     }
 }
