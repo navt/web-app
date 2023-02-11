@@ -8,13 +8,15 @@
     <meta name="description" content="Default description">
     <meta name="keywords" content="Default keyword">
     <link rel="stylesheet" href="../uikit.min.css">
-    <!--<script defer src="../js/one.dart.js"></script>-->
+    <script defer src="../js/add.dart.js"></script>
 </head>
 
 <body>
   <div class="uk-container">
+    <?php include 'views/navbar.php';?>
     <h1>Создать пост</h1>
-    <form method="post" action="/api/add">
+    <div id="msg" class="uk-alert-warning uk-width-1-2" uk-alert></div>
+    <form id="post-elements">
       <div class="uk-margin">
         <input name="title" class="uk-input" type="text" placeholder="Title" aria-label="Title">
       </div>
@@ -32,7 +34,7 @@
       </div>
       <div class="uk-margin">
         <label>
-          <button class="uk-button uk-button-default">Создать пост</button>
+          <button id="btn" class="uk-button uk-button-default">Создать пост</button>
         </label>
       </div>
     </form>

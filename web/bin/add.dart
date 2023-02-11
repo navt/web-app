@@ -3,16 +3,15 @@ import 'dart:convert';
 import 'package:web_app/web/idb.dart';
 
 // For reqest
-final url = '/api/auth';
+final url = '/api/add';
 const headerName = 'App-Token';
-var dataPointer = querySelector('form#lform') as FormElement;
+var dataPointer = querySelector('form#post-elements') as FormElement;
 final Element button = querySelector('#btn') as ButtonElement;
 // For message
 final Element? msg = querySelector('#msg');
 // For Indexed DB
 const idbName = 'Blog';
 const storeName = 'Token';
-
 
 void main(List<String> args) {
   button.onClick.listen(click);
@@ -53,16 +52,9 @@ Future<void> processResponse(String jsonString) async {
     return;
   }
 
-  if (itemJsonData.containsKey('newtoken')) {
-    // Change token
-    Idb idb = Idb(idbName, storeName);
-    var db = await idb.openDB(1);
-    var records = await idb.cursor(db);
-    var old = records[0];  
-    idb.del(db, old['created']);
-    idb.add(db, itemJsonData['newtoken']);
-
+  if (itemJsonData.containsKey('success')) {
     window.open('/edit/0', '_parent');
+    return;
   }
 }
 

@@ -13,6 +13,7 @@
 
 <body>
   <div class="uk-container">
+    <?php include 'views/navbar.php';?>
     <h1></h1>
     <div id="cntnt"></div>
     <ul id="posts-list"></ul>

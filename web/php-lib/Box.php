@@ -36,8 +36,8 @@ class Box extends Pimple {
             return new Jwt($c['secret'], $c['algorithm']);
         };
 
-        $this['user'] = function ($c) {
-            return new User($c);
+        $this['auth'] = function ($c) {
+            return new Auth($c);
         };
 
     }

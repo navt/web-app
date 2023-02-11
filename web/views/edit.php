@@ -13,8 +13,11 @@
 
 <body>
   <div class="uk-container">
+    <?php include 'views/navbar.php';?>
     <h1>Редактировать пост</h1>
-    <form method="post" action="/api/edit">
+    <div id="msg" class="uk-alert-warning uk-width-1-2" uk-alert></div>
+    <form id="post-elements"> 
+      <!-- method="post" action="/api/edit"> -->
       <div class="uk-margin">
         <input name="title" class="uk-input" type="text" placeholder="Title" aria-label="Title" minlength="3">
       </div>
@@ -33,15 +36,15 @@
       <input name="id" type="hidden" value="<?php echo $id;?>">
       <div class="uk-margin">  
         <label>
-          <button class="uk-button uk-button-default">Сохранить</button>
+          <button id="save-btn" class="uk-button uk-button-default">Сохранить</button>
         </label>
       </div>
     </form>
     <hr>
     <div class="uk-margin">
-      <form method="post" action="/api/delete">
+      <form id="delete-form">
         <input name="id" type="hidden" value="<?php echo $id;?>">  
-      <button class="uk-button uk-button-default">Удалить пост</button>
+        <button id="delete-btn" class="uk-button uk-button-default">Удалить пост</button>
     </div>
     
     <div id="cntnt"></div>

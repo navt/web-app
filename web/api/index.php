@@ -1,5 +1,6 @@
 <?php
-// api routs
+// API routs
+//
 // $ cd web-app/web
 // $ php -S localhost:8000
 // try in browser http://localhost:8000/api/posts/1-3

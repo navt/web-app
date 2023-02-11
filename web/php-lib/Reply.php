@@ -3,20 +3,21 @@
 class Reply {
     private object $box;
     private object $DB;
-    private object $user;
+    private object $auth;
     private $result;
+    private $rows = [];
 
     public function __construct(object $box) {
         $this->DB = $box['db'];
-        $this->user = $box['user'];
+        $this->auth = $box['auth'];
     }
 
     private function giveData():void {
         while($row = $this->result->fetch_array(MYSQLI_ASSOC)){
-            $rows[] = $row;
+            $this->rows[] = $row;
         }
 
-        H::giveJson($rows);
+        H::giveJson($this->rows);
     }
 
     public function checkContent(string $content):void {
@@ -36,7 +37,14 @@ class Reply {
         if ($this->result->num_rows == 0) {
             H::giveJson([["error" => "no such record in DB relevant content: {$content}, id: {$id}"]]);
         } else {
-            $this->giveData();
+            $row = $this->result->fetch_array(MYSQLI_ASSOC);
+            $this->auth->seeHeader();
+
+            if ($this->auth->token !== '' && $this->auth->tokenIsValid()) {
+                $row['token-is-valid'] = true;
+            }
+
+            H::giveJson([$row]);
         }
 
     }
@@ -56,6 +64,13 @@ class Reply {
 
     public function some(string $content, string $from, $to):void {
         $this->checkContent($content);
+        $this->auth->seeHeader();
+
+        if (!$this->auth->tokenIsValid()) {
+            H::giveJson([["error" => "you need to auth"]]);
+            exit();
+        }
+        
         $sql = sprintf("SELECT * FROM `%s` WHERE id >= %s AND id <= %s",
             $content, $from, $to);
         $this->result = $this->DB->query($sql);
@@ -84,6 +99,13 @@ class Reply {
     // https://ru.stackoverflow.com/questions/193978/
     public function add(string $content):void {
         $this->checkContent($content);
+        $this->auth->seeHeader();
+
+        if (!$this->auth->tokenIsValid()) {
+            H::giveJson([["error" => "you need to auth"]]);
+            exit();
+        }
+
         $p = $this->takePost();
 
         if ($p == null) {
@@ -102,13 +124,19 @@ class Reply {
         if ($this->result == false) {
             H::giveJson([["error" => "record not added"]]);
         } else {
-            H::go('/');
+            H::giveJson([["success" => "record added"]]);
         }
         
     }
 
     public function update(string $content):void {
         $this->checkContent($content);
+        $this->auth->seeHeader();
+
+        if (!$this->auth->tokenIsValid()) {
+            H::giveJson([["error" => "you need to auth"]]);
+            exit();
+        }
 
         $p = $this->takePost();
 
@@ -126,12 +154,19 @@ class Reply {
         if ($this->result == false) {
             H::giveJson([["error" => "record not updated"]]);
         } else {
-            H::go('/');
+            H::giveJson([["success" => "record updated"]]);
         }
 
     }
 
     public function delete():void {
+        $this->auth->seeHeader();
+
+        if (!$this->auth->tokenIsValid()) {
+            H::giveJson([["error" => "you need to auth"]]);
+            exit();
+        }
+
         $p = H::post();
         
         if (!isset($p->id) || !is_numeric($p->id)) {
@@ -145,7 +180,7 @@ class Reply {
         if ($this->result == false) {
             H::giveJson([["error" => "record not deleted"]]);
         } else {
-            H::go('/edit/0');
+            H::giveJson([["success" => "record deleted"]]);
         }
         
     }
@@ -164,8 +199,8 @@ class Reply {
         // - да -> смотрим его токен, если токен действительный, пернаправляем
         // на редактирование. Если токен старый, выдаем новый токен
         // - нет -> отправляем обратно на /auth 
-        $this->user->exists($p->login, $p->password);
-        
+        $this->auth->exists($p->login, $p->password);
+        $this->auth->isThereAuth();
 
     }
 

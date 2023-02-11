@@ -10,6 +10,7 @@
 </head>
 <body>
   <div class="uk-container">
+    <?php include 'views/navbar.php';?>
     <form id="lform">
       <div class="uk-margin-top"></div>
       <div class="uk-margin">
