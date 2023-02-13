@@ -8,17 +8,13 @@ class AllPages extends AnyPage {
   @override
   void fillPage(List<dynamic> jsonData) {
   
-    keywords.content = 'all,posts of blog,list';
-    description.content = 'Realy description of blog';
-    title?.text = 'Programmer crafts';
-    h1?.text = 'Programmer crafts';
+    keywords.content = 'пост,обзор';
+    description.content = 'Обзор постов блога';
+    title?.text = 'Блог - Обзор постов';
+    h1?.text = 'Список постов';
 
     for (var i = jsonData.length - 1; i >= 0; i--) {
-      
-      if (jsonData[i]['publish'] != '1') {
-        continue;
-      }
-      
+
       final li = LIElement();
 
       // https://api.dart.dev/stable/2.18.2/dart-html/HtmlElement-class.html
@@ -35,7 +31,7 @@ class AllPages extends AnyPage {
       final cd = buff?.substring(0, 16);
       date.text = '$cd';
       li.children.add(date);
-      
+
       postsList.children.add(li);
     }
   }

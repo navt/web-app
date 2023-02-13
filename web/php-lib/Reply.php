@@ -21,7 +21,7 @@ class Reply {
     }
 
     public function checkContent(string $content):void {
-        $availableContent = ['posts'];
+        $availableContent = ['posts', 'items'];
 
         if (in_array($content, $availableContent) === false) {
             H::giveJson([["error" => "no such content as {$content}"]]);
@@ -46,7 +46,6 @@ class Reply {
 
             H::giveJson([$row]);
         }
-
     }
 
     public function all(string $content):void {
@@ -62,8 +61,9 @@ class Reply {
 
     }
 
-    public function some(string $content, string $from, $to):void {
-        $this->checkContent($content);
+
+    public function someAuth(string $from, string $to):void {
+
         $this->auth->seeHeader();
 
         if (!$this->auth->tokenIsValid()) {
@@ -71,17 +71,30 @@ class Reply {
             exit();
         }
         
-        $sql = sprintf("SELECT * FROM `%s` WHERE id >= %s AND id <= %s",
-            $content, $from, $to);
+        $sql = sprintf("SELECT * FROM `posts` WHERE id >= %s AND id <= %s",
+            $from, $to);
         $this->result = $this->DB->query($sql);
 
         if ($this->result->num_rows == 0) {
             H::giveJson(
-                [["error" => "no such records in DB relevant content: {$content}, from: {$from}, to: {$to}"]]);
+                [["error" => "no such records in DB relevant content: posts, from: {$from}, to: {$to}"]]);
         } else {
             $this->giveData();
         }
+    }
 
+    public function someFree(string $from, string $to):void {
+        
+        $sql = sprintf("SELECT * FROM `posts` WHERE id >= %s AND id <= %s",
+            $from, $to);
+        $this->result = $this->DB->query($sql);
+
+        if ($this->result->num_rows == 0) {
+            H::giveJson(
+                [["error" => "no such records in DB relevant content: posts, from: {$from}, to: {$to}"]]);
+        } else {
+            $this->giveData();
+        }
     }
 
     public function takePost():object {
@@ -96,7 +109,6 @@ class Reply {
         return $p;
     }
 
-    // https://ru.stackoverflow.com/questions/193978/
     public function add(string $content):void {
         $this->checkContent($content);
         $this->auth->seeHeader();
@@ -188,20 +200,13 @@ class Reply {
     public function auth() {
 
         $p = H::post();
-        $msg = [["error" => "incorrect pair login/password #1"]];
 
         if (!filter_var($p->login, FILTER_VALIDATE_EMAIL)) {
-            H::giveJson($msg);
+            H::giveJson([["error" => "incorrect pair login/password #1"]]);
             exit();
         }
-
-        // есть ли такой юзер, совпадают ли хеши паролей?
-        // - да -> смотрим его токен, если токен действительный, пернаправляем
-        // на редактирование. Если токен старый, выдаем новый токен
-        // - нет -> отправляем обратно на /auth 
+ 
         $this->auth->exists($p->login, $p->password);
         $this->auth->isThereAuth();
-
     }
-
 }

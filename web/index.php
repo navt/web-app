@@ -37,13 +37,6 @@ $router->map('GET', '/auth', function() {
 
 $match = $router->match();
 
-// echo 'Target:';
-// var_dump($match['target']);
-// echo 'Params:';
-// var_dump($match['params']);
-// echo 'Name:';
-// var_dump($match['name']);
-
 // call closure or throw 404 status
 if( is_array($match) && is_callable( $match['target'] ) ) {
 	call_user_func_array( $match['target'], $match['params'] ); 

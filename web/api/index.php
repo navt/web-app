@@ -38,9 +38,12 @@ $router->map('GET', '/[a:content]/0', function($content) use($reply) {
 $router->map('GET', '/[a:content]/[i:id]', function($content, $id) use($reply) {
         $reply->one($content, $id);
     }, 'one_record');
-$router->map('GET', '/[a:content]/[i:from]-[i:to]', function($content, $from, $to) use($reply) {
-        $reply->some($content, $from, $to);
-    }, 'some_records');
+$router->map('GET', '/items/[i:from]-[i:to]', function($from, $to) use($reply) {
+        $reply->someAuth($from, $to);
+    }, 'some_auth');
+$router->map('GET', '/posts/[i:from]-[i:to]', function($from, $to) use($reply) {
+        $reply->someFree($from, $to);
+    }, 'some_free');
 // other requests
 $router->map('POST', '/add', function() use($reply) {
     $content = 'posts';
@@ -58,13 +61,6 @@ $router->map('POST', '/auth', function() use($reply) {
 }, 'auth');
 
 $match = $router->match();
-
-// echo 'Target:';
-// var_dump($match['target']);
-// echo 'Params:';
-// var_dump($match['params']);
-// echo 'Name:';
-// var_dump($match['name']);
 
 // call closure or report error
 if( is_array($match) && is_callable( $match['target'] ) ) {

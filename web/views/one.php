@@ -7,7 +7,7 @@
     <title>Default title</title>
     <meta name="description" content="Default description">
     <meta name="keywords" content="Default keyword">
-    <link rel="stylesheet" href="../uikit.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.15.24/dist/css/uikit.min.css" />
     <script defer src="../js/one.dart.js"></script>
 </head>
 

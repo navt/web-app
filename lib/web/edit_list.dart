@@ -57,10 +57,10 @@ class EditList extends AnyPage {
 
   @override
   void fillPage(List<dynamic> jsonData) {
-    keywords.content = ' edit posts,list';
-    description.content = 'Realy description of blog';
-    title?.text = 'List for edit';
-    h1?.text = 'Posts list for edit';
+    keywords.content = 'редактирование,пост';
+    description.content = 'минус означает скрытый пост';
+    title?.text = 'Список для редактирования';
+    h1?.text = 'Редактировать пост';
     /*
     AnchorElement buttonCreate = AnchorElement();
     buttonCreate.classes = ['uk-button', 'uk-button-default', 'uk-button-small'];

@@ -7,7 +7,7 @@
     <title>Default title</title>
     <meta name="description" content="Default description">
     <meta name="keywords" content="Default keyword">
-    <link rel="stylesheet" href="../uikit.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.15.24/dist/css/uikit.min.css" />
     <script defer src="../js/edit.dart.js"></script>
 </head>
 
@@ -17,7 +17,6 @@
     <h1>Редактировать пост</h1>
     <div id="msg" class="uk-alert-warning uk-width-1-2" uk-alert></div>
     <form id="post-elements"> 
-      <!-- method="post" action="/api/edit"> -->
       <div class="uk-margin">
         <input name="title" class="uk-input" type="text" placeholder="Title" aria-label="Title" minlength="3">
       </div>
@@ -36,7 +35,7 @@
       <input name="id" type="hidden" value="<?php echo $id;?>">
       <div class="uk-margin">  
         <label>
-          <button id="save-btn" class="uk-button uk-button-default">Сохранить</button>
+          <button id="save-btn" class="uk-button uk-button-default">Save</button>
         </label>
       </div>
     </form>
@@ -44,7 +43,7 @@
     <div class="uk-margin">
       <form id="delete-form">
         <input name="id" type="hidden" value="<?php echo $id;?>">  
-        <button id="delete-btn" class="uk-button uk-button-default">Удалить пост</button>
+        <button id="delete-btn" class="uk-button uk-button-default">Delete post</button>
     </div>
     
     <div id="cntnt"></div>

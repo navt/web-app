@@ -1,5 +1,5 @@
 <?php
-// https://gonzalo123.com/2012/07/09/building-a-simple-dependency-injection-container-with-php/
+
 class Auth {
     
     private object $box;

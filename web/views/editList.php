@@ -7,7 +7,7 @@
     <title>Default title</title>
     <meta name="description" content="Default description">
     <meta name="keywords" content="Default keyword">
-    <link rel="stylesheet" href="../uikit.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.15.24/dist/css/uikit.min.css" />
     <script defer src="../js/edit_list.dart.js"></script>
 </head>
 
@@ -17,7 +17,7 @@
     <h1></h1>
     <div id="cntnt"></div>
     <ul id="posts-list"></ul>
-    <div id="uri" style="display:none;">posts/1-100000</div>
+    <div id="uri" style="display:none;">items/1-100000</div>
   </div>  
 </body>
 </html>

@@ -36,10 +36,8 @@ class AnyPage {
   
     if (request.status == 200) {
       final response = request.responseText;
+      
       if (response != null) {
-
-        print('response: $response');
-        
         processResponse(response);
         return;
       }
@@ -49,10 +47,10 @@ class AnyPage {
   }
 
   void processResponse(String jsonString) {
-    print('jsonString: $jsonString');
+    
     var jsonData = json.decode(jsonString);
     var itemJsonData = jsonData[0];
-    print(itemJsonData);
+
     if (itemJsonData.containsKey('error')) {
       h1?.text = 'Error';
       cntnt?.text = itemJsonData['error'];

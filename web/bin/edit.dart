@@ -23,7 +23,6 @@ final Element? title = querySelector('title');
 final Element? h1 = querySelector('h1');
 final MetaElement description = querySelector('meta[name="description"]') as MetaElement;
 final MetaElement keywords = querySelector('meta[name="keywords"]') as MetaElement;
-final Element? cntnt = querySelector('#cntnt');
 
 final HiddenInputElement id = querySelector('input[name="id"]') as HiddenInputElement;
 InputElement titleInput = querySelector('input[name="title"]') as InputElement;
@@ -74,7 +73,7 @@ void requestComplete(HttpRequest request) {
     }
   }
   // The GET request failed. Handle the error.
-  cntnt?.text = 'Request failed, status=${request.status}';
+  msg?.text = 'Request failed, status=${request.status}';
 }
 
 void processResponse(String jsonString) {
@@ -84,7 +83,7 @@ void processResponse(String jsonString) {
 
   if (itemJsonData.containsKey('error')) {
     h1?.text = 'Error';
-    cntnt?.text = itemJsonData['error'];
+    msg?.text = itemJsonData['error'];
     return;
   }
 
